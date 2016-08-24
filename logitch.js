@@ -10,7 +10,9 @@ define(function(require,exports,module){
 		}
 	};
 	
-	function Logitch(){};
+	function Logitch(){
+		
+	};
 	
 	module.exports = Logitch;
 	
@@ -18,4 +20,11 @@ define(function(require,exports,module){
 	Logitch.prototype.level = function(level){
 		console.level = level;
 	};
+	
+	//获取logitch 所在的上下文（模块）的日志输出级别
+	Logitch.prototype.scopeLevel = function(scope,level){
+	/*	return  { log : console.log, level:level };*/
+		
+		return "var console = { log : "+console.log+", level:'"+level+"' };";
+	}
 });

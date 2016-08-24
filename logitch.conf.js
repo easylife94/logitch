@@ -7,5 +7,7 @@ define(function(required,exports,module){
 	
 	//日志输出级别
 	CONF.level = "info";
+	//日志输出格式
+	CONF.format = "";
 	
 });
