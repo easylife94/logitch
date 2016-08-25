@@ -2,14 +2,32 @@ define(function(require,exports,module){
 	
 	var CONF = require("./logitch.conf.js");
 	
-	var _log = console.log;
+	var _log = window.console.log;
 	console.level = CONF.level;
-	console.log = function(param){
+	console.isClose = CONF.isClose;
+	
+	console.log = function(str){
+		if(this.isClose){
+			return;
+		}
+		
 		if(this.level == "info"){
-			_log(param);
+			if(arguments.length == 1){
+				_log(str);
+			}else{
+				var param = "";
+				for(var i = 0; i < arguments.length; i++){
+					 param += ("arguments["+i+"]");
+					 if(i != arguments.length-1){
+						 param+=",";
+					 }
+				}
+				eval("_log("+param+")");
+			}
+			 
 		}
 	};
-	
+
 	function Logitch(){
 		
 	};
@@ -21,10 +39,13 @@ define(function(require,exports,module){
 		console.level = level;
 	};
 	
+	
+	
 	//获取logitch 所在的上下文（模块）的日志输出级别
-	Logitch.prototype.scopeLevel = function(scope,level){
-	/*	return  { log : console.log, level:level };*/
-		
-		return "var console = { log : "+console.log+", level:'"+level+"' };";
+	Logitch.prototype.getScopeConsole = function(level){
+		return  { log:console.log, level:level,isClose:console.isClose};
 	}
+	
+	
+	
 });
